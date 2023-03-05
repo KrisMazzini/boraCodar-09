@@ -16,8 +16,8 @@ export const GlobalStyle = createGlobalStyle`
         padding: 2rem;
 
         display: flex;
+        flex-direction: column;
         justify-content: center;
-        align-items: center;
 
         background-color: ${(props) => props.theme['bg-color']};
     }
@@ -27,5 +27,9 @@ export const GlobalStyle = createGlobalStyle`
         font-size: 1.6rem;
         font-weight: 400;
         line-height: 2.4rem;
+    }
+
+    div#root {
+        
     }
 `
