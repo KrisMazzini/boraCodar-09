@@ -1,4 +1,4 @@
-import { useState, useRef, useEffect } from 'react'
+import { useState, useRef, useEffect, ChangeEvent } from 'react'
 
 import chevronDown from '../../assets/chevron-down.svg'
 import { Container, CurrencySelector, Divider, InputWrapper } from './styles'
@@ -11,13 +11,15 @@ import { CurrencyType } from '../../contexts/CurrenciesContext'
 interface CurrencyWrapperProps {
   amount: number | undefined
   currency: CurrencyType
+  disabled?: boolean
   onChangeCurrency: (newCurrency: CurrencyType) => void
-  onChangeAmount: (newAmount: number) => void
+  onChangeAmount?: (newAmount: number) => void
 }
 
 export function CurrencyWrapper({
   amount,
   currency,
+  disabled = false,
   onChangeCurrency,
   onChangeAmount,
 }: CurrencyWrapperProps) {
@@ -29,10 +31,18 @@ export function CurrencyWrapper({
     setOpenList((prev) => !prev)
   }
 
+  function handleChangeAmount(event: ChangeEvent<HTMLInputElement>) {
+    if (!onChangeAmount) {
+      return
+    }
+
+    onChangeAmount(Number(event.target.value))
+  }
+
   useEffect(() => {
     function handleOutsideComponentClick(event: MouseEvent) {
       const clickedWithinComponent =
-        ref?.current && ref.current.contains(event.target)
+        ref?.current && ref.current.contains(event.target as Node)
 
       if (!clickedWithinComponent) {
         setOpenList(false)
@@ -51,7 +61,8 @@ export function CurrencyWrapper({
           name="amout"
           value={amount || ''}
           placeholder="0"
-          onChange={(event) => onChangeAmount(Number(event.target.value))}
+          disabled={disabled}
+          onChange={handleChangeAmount}
         />
       </InputWrapper>
       <Divider />

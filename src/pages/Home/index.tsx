@@ -30,6 +30,11 @@ export function Home() {
   })
 
   function handleChangeInputCurrency(newCurrency: CurrencyType) {
+    if (newCurrency.code === outputCurrency.currency.code) {
+      handleSwapCurrencies()
+      return
+    }
+
     setInputCurrency((prev) => {
       return { ...prev, currency: newCurrency }
     })
@@ -39,17 +44,20 @@ export function Home() {
     setInputCurrency((prev) => {
       return { ...prev, amount: newAmount }
     })
-  }
 
-  function handleChangeOutputCurrency(newCurrency: CurrencyType) {
     setOutputCurrency((prev) => {
-      return { ...prev, currency: newCurrency }
+      return { ...prev, amount: 2 * newAmount }
     })
   }
 
-  function handleChangeOutputAmount(newAmount: number) {
+  function handleChangeOutputCurrency(newCurrency: CurrencyType) {
+    if (newCurrency.code === inputCurrency.currency.code) {
+      handleSwapCurrencies()
+      return
+    }
+
     setOutputCurrency((prev) => {
-      return { ...prev, amount: newAmount }
+      return { ...prev, currency: newCurrency }
     })
   }
 
@@ -78,7 +86,7 @@ export function Home() {
             amount={outputCurrency.amount}
             currency={outputCurrency.currency}
             onChangeCurrency={handleChangeOutputCurrency}
-            onChangeAmount={handleChangeOutputAmount}
+            disabled
           />
         </CurrencyConverter>
       </CardSection>
