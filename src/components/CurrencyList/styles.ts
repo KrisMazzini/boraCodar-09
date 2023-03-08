@@ -46,4 +46,8 @@ export const Container = styled.div`
       background-color: ${(props) => props.theme['surface-secondary']};
     }
   }
+
+  @media (min-width: 712px) {
+    width: 16rem;
+  }
 `

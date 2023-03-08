@@ -12,14 +12,20 @@ export const GlobalStyle = createGlobalStyle`
     }
 
     body {
+        min-width: 32rem;
         min-height: 100vh;
         padding: 2rem;
-
+        
         display: flex;
         flex-direction: column;
         justify-content: center;
-
+        
         background-color: ${(props) => props.theme['bg-color']};
+        overflow: auto;
+        
+        @media (min-width: 712px) {
+            align-items: center;
+        }
     }
 
     body, input {

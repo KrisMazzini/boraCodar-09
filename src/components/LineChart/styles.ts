@@ -15,6 +15,10 @@ export const Container = styled.div`
 
   display: flex;
   gap: 0.8rem;
+
+  @media (min-width: 712px) {
+    height: 35.6rem;
+  }
 `
 
 export const Legend = styled.div`
@@ -49,7 +53,6 @@ export const Legend = styled.div`
 
 export const Grid = styled(Legend)`
   min-width: 0;
-  flex-basis: 25.6rem;
   flex-grow: 1;
 
   position: relative;

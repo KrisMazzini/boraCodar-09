@@ -1,7 +1,8 @@
 import styled from 'styled-components'
 
 export const Container = styled.main`
-  min-width: 32rem;
+  width: 100%;
+  max-width: 80rem;
   padding: 1.6rem;
   border-radius: 16px;
 

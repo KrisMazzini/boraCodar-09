@@ -39,7 +39,7 @@ const INTERVALS = {
     parameter: 'days',
   },
   Max: {
-    amount: 10,
+    amount: 360,
     parameter: 'days',
   },
 } as const

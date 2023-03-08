@@ -9,11 +9,17 @@ const fadeBackgroundIn = (theme: DefaultTheme) => keyframes`
 `
 
 export const IntervalSelector = styled.div`
+  width: 85%;
   align-self: flex-end;
 
   display: flex;
   align-items: center;
+  justify-content: space-between;
   gap: 0.32rem;
+
+  @media (min-width: 712px) {
+    width: 95%;
+  }
 `
 
 export const Interval = styled.span`

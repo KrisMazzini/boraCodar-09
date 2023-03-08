@@ -11,4 +11,9 @@ export const Converter = styled.div`
     height: 2.4rem;
     cursor: pointer;
   }
+
+  @media (min-width: 712px) {
+    flex-direction: row;
+    gap: 1.6rem;
+  }
 `

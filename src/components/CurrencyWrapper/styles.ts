@@ -34,6 +34,7 @@ export const InputWrapper = styled.div`
 
   input {
     all: unset;
+    width: 100%;
 
     &::-webkit-outer-spin-button,
     &::-webkit-inner-spin-button {
