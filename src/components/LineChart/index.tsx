@@ -8,7 +8,11 @@ interface ChartDimensionsType {
   height: number
 }
 
-export function LineChart() {
+interface LineChartProps {
+  data: number[]
+}
+
+export function LineChart({ data }: LineChartProps) {
   const [chartDimensions, setChartDimensions] = useState<ChartDimensionsType>({
     width: 0,
     height: 0,
@@ -17,14 +21,9 @@ export function LineChart() {
   const ref = useRef<HTMLDivElement>(null)
   const theme = useTheme()
 
-  const series = [
-    5.17, 5.25, 5.16, 5.14, 5.18, 5.08, 5.09, 5.05, 5.12, 5.26, 5.23, 5.21,
-    5.07, 5.29, 5.27, 5.13, 5.14, 5.3, 5.19, 5,
-  ]
-
   const labels = calculateKeyLabels()
 
-  const chartCoordinates = series.map((value, index) => {
+  const chartCoordinates = data.map((value, index) => {
     return {
       x: calculateXPosition(index),
       y: calculateYPosition(value),
@@ -41,22 +40,22 @@ export function LineChart() {
 
   function obtainMaxAndMinValues() {
     return {
-      maxValue: Math.max(...series),
-      minValue: Math.min(...series),
+      maxValue: Math.max(...data),
+      minValue: Math.min(...data),
     }
   }
 
   function calculateKeyLabels() {
     const { maxValue, minValue } = obtainMaxAndMinValues()
     const step = (maxValue - minValue) / 3
-    const fixedDecimals = step < 0.09 ? 2 : 1
+    const fixedDecimals = step < 0.009 ? 3 : step < 0.09 ? 2 : 1
 
     const keyLabels = [maxValue, maxValue - step, minValue + step, minValue]
     return keyLabels.map((label) => label.toFixed(fixedDecimals))
   }
 
   function calculateXPosition(index: number): number {
-    return (chartDimensions.width * index) / (series.length - 1)
+    return (chartDimensions.width * index) / (data.length - 1)
   }
 
   function calculateYPosition(value: number): number {
@@ -69,8 +68,8 @@ export function LineChart() {
   }
 
   function findClosingVertices() {
-    const firstValue = series[0]
-    const lastValue = series[series.length - 1]
+    const firstValue = data[0]
+    const lastValue = data[data.length - 1]
 
     return [
       {
@@ -98,7 +97,7 @@ export function LineChart() {
     const previousPointX =
       index > 0 ? calculateXPosition(index - 1) : currentPointX
     const previousPointY =
-      index > 0 ? calculateYPosition(series[index - 1]) : currentPointY
+      index > 0 ? calculateYPosition(data[index - 1]) : currentPointY
 
     return (
       <Fragment key={currentPointX + currentPointY + index}>
@@ -129,6 +128,14 @@ export function LineChart() {
     return () => window.removeEventListener('resize', handleResize)
   }, [])
 
+  if (!data || !data.length) {
+    return (
+      <Container>
+        It was not possible to retrieve data for the selected currencies
+      </Container>
+    )
+  }
+
   return (
     <Container>
       <Legend>
@@ -137,10 +144,9 @@ export function LineChart() {
         })}
       </Legend>
       <Grid ref={ref}>
-        <div></div>
-        <div></div>
-        <div></div>
-        <div></div>
+        {labels.map((label) => (
+          <div key={label}></div>
+        ))}
         <svg width={chartDimensions.width} height={chartDimensions.height}>
           <defs>
             <linearGradient id="chart-gradient" gradientTransform="rotate(90)">
@@ -155,7 +161,7 @@ export function LineChart() {
             </linearGradient>
           </defs>
           <polygon points={polygonPoints} />
-          {series.map(buildChartLine)}
+          {data.map(buildChartLine)}
         </svg>
       </Grid>
     </Container>

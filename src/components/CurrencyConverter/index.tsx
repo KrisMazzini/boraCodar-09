@@ -6,11 +6,12 @@ import { Converter } from './styles'
 import { CardSection } from '../CardSection'
 import { CurrencyWrapper } from '../CurrencyWrapper'
 
+import { calculateAvarageRate } from '../../utils.avarageRate'
 import { api } from '../../services/api'
 import { CurrencyType } from '../../constants/currencies'
 import { CurrenciesContext } from '../../contexts/CurrenciesContext'
 
-interface ExchangeRateDataType {
+export interface ConversionType {
   high: string
   low: string
 }
@@ -63,10 +64,10 @@ export function CurrencyConverter() {
         const response = await api.get(
           `${inputCurrency.code}-${outputCurrency.code}`,
         )
-        const exchangeRageData = response.data as ExchangeRateDataType[]
+        const exchangeRageData = response.data as ConversionType[]
 
         const { high, low } = exchangeRageData[0]
-        const avarageRate = (Number(high) + Number(low)) / 2
+        const avarageRate = calculateAvarageRate(high, low)
         setExchangeRate(avarageRate)
         setOutputAmount(roundAmount(avarageRate * inputAmount))
 

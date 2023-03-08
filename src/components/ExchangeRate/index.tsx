@@ -1,27 +1,101 @@
-import { useState } from 'react'
-import { CardSection } from '../CardSection'
-import { LineChart } from '../LineChart'
+import { useEffect, useState, useContext } from 'react'
+import moment from 'moment'
+
 import { IntervalSelector, Interval, SelectedInterval } from './styles'
 
-const INTERVALS = ['1D', '5D', '1M', '1Y', '5Y', 'Max'] as const
+import { CardSection } from '../CardSection'
+import { LineChart } from '../LineChart'
 
-type IntervalType = (typeof INTERVALS)[number]
+import { api } from '../../services/api'
+import { calculateAvarageRate } from '../../utils.avarageRate'
+
+import { CurrenciesContext } from '../../contexts/CurrenciesContext'
+import { ConversionType } from '../CurrencyConverter'
+moment.locale('pt-br')
+
+interface ExchangeRateType extends ConversionType {
+  timestamp: string
+}
+
+const INTERVALS = {
+  '1D': {
+    amount: 10,
+    parameter: 'days',
+  },
+  '5D': {
+    amount: 30,
+    parameter: 'days',
+  },
+  '1M': {
+    amount: 60,
+    parameter: 'days',
+  },
+  '1Y': {
+    amount: 120,
+    parameter: 'days',
+  },
+  '5Y': {
+    amount: 240,
+    parameter: 'days',
+  },
+  Max: {
+    amount: 10,
+    parameter: 'days',
+  },
+} as const
+
+type IntervalType = keyof typeof INTERVALS
 
 export function ExchangeRate() {
-  const [interval, setInterval] = useState<IntervalType>('1M')
+  const { inputCurrency, outputCurrency } = useContext(CurrenciesContext)
+  const [selectedInterval, setSelectedInterval] = useState<IntervalType>('1M')
+  const [exchangeData, setExchangeData] = useState<number[]>([])
 
-  const intervals = Object.values(INTERVALS)
+  const intervals = Object.keys(INTERVALS) as IntervalType[]
 
   function handleSelectInterval(newInterval: IntervalType) {
-    setInterval(newInterval)
+    setSelectedInterval(newInterval)
   }
+
+  useEffect(() => {
+    function sortByAscendingTimestamp(
+      exchangeRateA: ExchangeRateType,
+      exchangeRateB: ExchangeRateType,
+    ) {
+      return Number(exchangeRateA.timestamp) - Number(exchangeRateB.timestamp)
+    }
+
+    async function handleExchangeRateData() {
+      try {
+        const currencies = `${inputCurrency.code}-${outputCurrency.code}`
+
+        const response = await api.get(
+          `json/daily/${currencies}/${INTERVALS[selectedInterval].amount}`,
+        )
+
+        const exchangeRateData = response.data as ExchangeRateType[]
+        const avarageRates = exchangeRateData
+          .sort(sortByAscendingTimestamp)
+          .map((rate) => calculateAvarageRate(rate.high, rate.low))
+
+        setExchangeData(avarageRates)
+
+        console.log('Exchange Rate History obtained successfully.')
+      } catch (e) {
+        console.error(e)
+        setExchangeData([])
+      }
+    }
+
+    handleExchangeRateData()
+  }, [inputCurrency, outputCurrency, selectedInterval])
 
   return (
     <CardSection title="Exchange Rate" contentGap="lg">
-      <LineChart />
+      <LineChart data={exchangeData} />
       <IntervalSelector>
-        {intervals.map((int) => {
-          return interval === int ? (
+        {intervals.map((int: IntervalType) => {
+          return selectedInterval === int ? (
             <SelectedInterval key={int}>{int}</SelectedInterval>
           ) : (
             <Interval key={int} onClick={() => handleSelectInterval(int)}>
