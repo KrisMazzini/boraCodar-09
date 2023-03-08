@@ -3,7 +3,7 @@ import { CardSection } from '../CardSection'
 import { LineChart } from '../LineChart'
 import { IntervalSelector, Interval, SelectedInterval } from './styles'
 
-const INTERVALS = ['1D', '5D', '1M', '1A', '5A', 'Máx'] as const
+const INTERVALS = ['1D', '5D', '1M', '1Y', '5Y', 'Max'] as const
 
 type IntervalType = (typeof INTERVALS)[number]
 
@@ -17,7 +17,7 @@ export function ExchangeRate() {
   }
 
   return (
-    <CardSection title="Taxa de câmbio" contentGap="lg">
+    <CardSection title="Exchange Rate" contentGap="lg">
       <LineChart />
       <IntervalSelector>
         {intervals.map((int) => {

@@ -73,6 +73,8 @@ export function CurrencyConverter() {
         console.log('Exchange Rate obtained successfully.')
       } catch (e) {
         console.error(e)
+        setInputAmount(0)
+        setOutputAmount(0)
       }
     }
 
@@ -80,7 +82,7 @@ export function CurrencyConverter() {
   }, [inputCurrency, outputCurrency])
 
   return (
-    <CardSection title="Conversor de moedas">
+    <CardSection title="Currency converter">
       <Converter>
         <CurrencyWrapper
           amount={inputAmount}
