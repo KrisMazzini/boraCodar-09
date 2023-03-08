@@ -5,12 +5,12 @@ import { Container, CurrencyConverter } from './styles'
 
 import { CardSection } from '../../components/CardSection'
 import { CurrencyWrapper } from '../../components/CurrencyWrapper'
-import { LineChart } from '../../components/LineChart'
 
 import {
   CurrenciesContext,
   CurrencyType,
 } from '../../contexts/CurrenciesContext'
+import { ExchangeRate } from '../../components/ExchangeRate'
 
 interface ConvertCurrencyType {
   amount: number | undefined
@@ -91,9 +91,7 @@ export function Home() {
           />
         </CurrencyConverter>
       </CardSection>
-      <CardSection title="Taxa de câmbio" contentGap="lg">
-        <LineChart />
-      </CardSection>
+      <ExchangeRate />
     </Container>
   )
 }
