@@ -123,17 +123,13 @@ export function LineChart({ data }: LineChartProps) {
     }
 
     window.addEventListener('resize', handleResize)
-    handleResize()
+    setTimeout(handleResize, 100)
 
     return () => window.removeEventListener('resize', handleResize)
   }, [])
 
   if (!data || !data.length) {
-    return (
-      <Container>
-        It was not possible to retrieve data for the selected currencies
-      </Container>
-    )
+    return <></>
   }
 
   return (
