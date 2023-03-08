@@ -11,16 +11,3 @@ export const Container = styled.main`
 
   background-color: ${(props) => props.theme['surface-primary']};
 `
-
-export const CurrencyConverter = styled.div`
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 0.8rem;
-
-  > img {
-    width: 2.4rem;
-    height: 2.4rem;
-    cursor: pointer;
-  }
-`

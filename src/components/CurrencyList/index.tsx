@@ -1,10 +1,9 @@
 import { useContext } from 'react'
 import { Container } from './styles'
 
-import {
-  CurrenciesContext,
-  CurrencyType,
-} from '../../contexts/CurrenciesContext'
+import { CurrenciesContext } from '../../contexts/CurrenciesContext'
+import { CurrencyType } from '../../constants/currencies'
+
 import { Currency } from '../Currency'
 
 interface CurrencyListProps {

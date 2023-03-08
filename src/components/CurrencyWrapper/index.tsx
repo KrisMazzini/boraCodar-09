@@ -6,7 +6,7 @@ import { Container, CurrencySelector, Divider, InputWrapper } from './styles'
 import { Currency } from '../Currency'
 import { CurrencyList } from '../CurrencyList'
 
-import { CurrencyType } from '../../contexts/CurrenciesContext'
+import { CurrencyType } from '../../constants/currencies'
 
 interface CurrencyWrapperProps {
   amount: number | undefined
