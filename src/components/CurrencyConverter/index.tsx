@@ -50,8 +50,11 @@ export function CurrencyConverter() {
 
   function handleSwapCurrencies() {
     const inputCurr = { ...inputCurrency }
+    const inAmount = inputAmount
     setInputCurrency({ ...outputCurrency })
     setOutputCurrency({ ...inputCurr })
+    setInputAmount(outputAmount)
+    setOutputAmount(inAmount)
   }
 
   function roundAmount(amount: number, digits?: number) {

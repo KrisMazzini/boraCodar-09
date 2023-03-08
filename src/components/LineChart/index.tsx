@@ -123,7 +123,7 @@ export function LineChart({ data }: LineChartProps) {
     }
 
     window.addEventListener('resize', handleResize)
-    setTimeout(handleResize, 100)
+    setTimeout(handleResize, 200)
 
     return () => window.removeEventListener('resize', handleResize)
   }, [])
