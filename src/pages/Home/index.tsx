@@ -5,6 +5,7 @@ import { Container, CurrencyConverter } from './styles'
 
 import { CardSection } from '../../components/CardSection'
 import { CurrencyWrapper } from '../../components/CurrencyWrapper'
+import { LineChart } from '../../components/LineChart'
 
 import {
   CurrenciesContext,
@@ -91,7 +92,7 @@ export function Home() {
         </CurrencyConverter>
       </CardSection>
       <CardSection title="Taxa de câmbio" contentGap="lg">
-        Taxa de câmbio
+        <LineChart />
       </CardSection>
     </Container>
   )
